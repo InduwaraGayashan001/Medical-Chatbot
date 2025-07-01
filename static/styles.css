@@ -1,0 +1,331 @@
+/* Essential Medical Chatbot Styles */
+:root {
+  --telegram-blue: #1c5287;
+  --telegram-light-blue: #54a3d9;
+  --telegram-dark: #17212b;
+  --telegram-gray: #f4f4f5;
+  --telegram-text: #000000;
+  --telegram-secondary: #707579;
+  --user-bubble: #1976d2;
+  --header-height: 60px;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f0f2f5;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main Container */
+.telegram-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+}
+
+/* Header */
+.telegram-header {
+  background: var(--telegram-blue);
+  color: white;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.bot-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--telegram-light-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 20px;
+  color: white;
+}
+
+.bot-info h1 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: white;
+}
+
+.bot-status {
+  font-size: 14px;
+  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.menu-button {
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.menu-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Chat Area */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: var(--telegram-gray);
+}
+
+.chat-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-area::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Messages */
+.message-wrapper {
+  margin-bottom: 12px;
+  display: flex;
+}
+
+.message-wrapper.user {
+  justify-content: flex-end;
+}
+
+.message-wrapper.bot {
+  justify-content: flex-start;
+}
+
+.avatar-wrapper {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  margin: 0 8px;
+}
+
+.avatar-wrapper.user-avatar {
+  background: var(--user-bubble);
+}
+
+.avatar-wrapper.bot-avatar {
+  background: #e74c3c;
+}
+
+.message-bubble {
+  padding: 12px 16px;
+  border-radius: 18px;
+  max-width: 70%;
+}
+
+.message-bubble.user {
+  background: var(--user-bubble);
+  color: white;
+  border-radius: 18px 4px 18px 18px;
+}
+
+.message-bubble.bot {
+  background: white;
+  color: var(--telegram-text);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 4px 18px 18px 18px;
+}
+
+.message-text {
+  font-size: 15px;
+  line-height: 1.4;
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.message-time {
+  font-size: 11px;
+  margin-top: 4px;
+  opacity: 0.7;
+  text-align: right;
+}
+
+.message-bubble.user .message-time {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #999;
+  margin: 0 2px;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-10px); }
+}
+
+/* Input Area */
+.input-area {
+  padding: 16px;
+  border-top: 1px solid #e1e5e9;
+  background: white;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--telegram-gray);
+  border-radius: 24px;
+  padding: 8px 16px;
+}
+
+.input-wrapper:focus-within {
+  background: white;
+  box-shadow: 0 0 0 2px var(--telegram-blue);
+}
+
+.message-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  resize: none;
+  font-size: 15px;
+  padding: 8px 0;
+  max-height: 120px;
+  font-family: inherit;
+}
+
+.message-input::placeholder {
+  color: var(--telegram-secondary);
+}
+
+.send-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--telegram-blue);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.send-button:hover {
+  transform: scale(1.1);
+}
+
+/* Dark Theme */
+body.dark-theme {
+  background: var(--telegram-dark);
+}
+
+body.dark-theme .telegram-container {
+  background: var(--telegram-dark);
+}
+
+body.dark-theme .telegram-header {
+  background: var(--telegram-dark);
+}
+
+body.dark-theme .chat-area {
+  background: #1a2633;
+}
+
+body.dark-theme .message-bubble.bot {
+  background: #2b3a4a;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .input-area {
+  background: var(--telegram-dark);
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .input-wrapper {
+  background: #2b3a4a;
+}
+
+body.dark-theme .input-wrapper:focus-within {
+  background: #374151;
+}
+
+body.dark-theme .message-input {
+  color: white;
+}
+
+body.dark-theme .message-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark-theme .send-button {
+  background: var(--telegram-dark);
+}
+
+body.dark-theme .typing-indicator {
+  background: #2b3a4a;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .avatar-wrapper {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .message-bubble {
+    padding: 8px 12px;
+  }
+}
