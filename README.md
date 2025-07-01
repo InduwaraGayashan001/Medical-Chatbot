@@ -1,4 +1,4 @@
-# MediBot - AI Medical Assistant 🏥
+# MediBot - AI Medical Assistant
 
 An AI-powered medical chatbot that provides accurate health information using RAG technology and a curated medical knowledge base.
 
@@ -107,11 +107,6 @@ cd medical-chatbot
 
 - **Export Chat**: Click the 3-dots menu → Export Chat
 ![welcome](./resources/export.png)
-
-### **Mobile Usage**
-- The interface is fully responsive
-- Touch-friendly buttons and inputs
-- Optimized chat bubbles for smaller screens
 
 ## Medical Disclaimer
 
