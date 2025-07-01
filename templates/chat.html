@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediBot - AI Medical Assistant</title>
+  
+  <!-- Bootstrap CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="telegram-container">
+    
+    <!-- Header -->
+    <div class="telegram-header">
+      <div class="header-left">
+        <div class="bot-avatar">
+          <i class="bi bi-heart-pulse"></i>
+        </div>
+        <div class="bot-info">
+          <h1>MediBot</h1>
+          <div class="bot-status">• Online</div>
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <button class="menu-button" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><h6 class="dropdown-header">
+            <i class="bi bi-gear me-2"></i>Options
+          </h6></li>
+          <li><a class="dropdown-item" href="#" id="toggle-theme">
+            <i class="bi bi-moon me-2"></i>Dark Mode
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#" id="clear-chat">
+            <i class="bi bi-trash3 me-2 text-danger"></i>Clear Chat
+          </a></li>
+          <li><a class="dropdown-item" href="#" id="export-chat">
+            <i class="bi bi-download me-2 text-success"></i>Export Chat
+          </a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-area" id="chat-area">
+      <!-- Welcome Message -->
+      <div class="message-wrapper bot welcome-message">
+        <div class="avatar-wrapper bot-avatar">
+          <i class="bi bi-heart-pulse"></i>
+        </div>
+        <div class="message-bubble bot">
+          <div class="message-text">
+            Hello! I'm MediBot, your AI medical assistant. I can help answer your health questions. How can I assist you today?
+          </div>
+          <div class="message-time">Just now</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <form id="chat-form">
+        <div class="input-wrapper">
+          <textarea 
+            id="user-input" 
+            class="message-input" 
+            placeholder="Type your medical question..."
+            rows="1"
+            required
+          ></textarea>
+          <button type="submit" class="send-button">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("user-input");
+    const chatArea = document.getElementById("chat-area");
+    const clearChat = document.getElementById("clear-chat");
+    const exportChat = document.getElementById("export-chat");
+    const toggleTheme = document.getElementById("toggle-theme");
+
+    // Auto-resize textarea
+    input.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+
+    // Submit form
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const userMsg = input.value.trim();
+      if (!userMsg) return;
+
+      // Add user message (removed the welcome message hiding code)
+      appendMessage(userMsg, 'user');
+      input.value = '';
+      input.style.height = 'auto';
+
+      // Show typing indicator
+      showTypingIndicator();
+
+      try {
+        const formData = new FormData();
+        formData.append('msg', userMsg);
+        
+        const response = await fetch('/get', {
+          method: 'POST',
+          body: formData
+        });
+
+        const botResponse = await response.text();
+        hideTypingIndicator();
+
+        if (botResponse) {
+          appendMessage(botResponse, 'bot');
+        }
+      } catch (error) {
+        hideTypingIndicator();
+        appendMessage('Sorry, I encountered an error. Please try again.', 'bot');
+      }
+    });
+
+    // Clear chat
+    clearChat.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Remove all messages except the welcome message
+      const messages = chatArea.querySelectorAll('.message-wrapper:not(.welcome-message)');
+      messages.forEach(msg => msg.remove());
+      
+      // Ensure welcome message is visible
+      const welcomeMsg = chatArea.querySelector('.welcome-message');
+      if (welcomeMsg) {
+        welcomeMsg.style.display = 'flex';
+      }
+    });
+
+    // Export chat
+    exportChat.addEventListener("click", (e) => {
+      e.preventDefault();
+      const messages = chatArea.querySelectorAll('.message-wrapper:not(.welcome-message)');
+      if (messages.length === 0) return;
+
+      let chatHistory = `MediBot Chat Export\n${new Date().toLocaleString()}\n${'='.repeat(40)}\n\n`;
+      
+      messages.forEach(msg => {
+        const isUser = msg.classList.contains('user');
+        const text = msg.querySelector('.message-text').textContent;
+        chatHistory += `${isUser ? 'You' : 'MediBot'}: ${text}\n\n`;
+      });
+
+      const blob = new Blob([chatHistory], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `medibot-chat-${new Date().toISOString().split('T')[0]}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Dark mode toggle
+    toggleTheme.addEventListener("click", (e) => {
+      e.preventDefault();
+      const isDark = document.body.classList.toggle('dark-theme');
+      const icon = e.target.querySelector('i');
+      
+      icon.className = isDark ? "bi bi-sun me-2" : "bi bi-moon me-2";
+      e.target.innerHTML = `${icon.outerHTML}${isDark ? 'Light Mode' : 'Dark Mode'}`;
+      
+      localStorage.setItem('darkMode', isDark);
+    });
+
+    function appendMessage(message, type) {
+      const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      const messageWrapper = document.createElement("div");
+      messageWrapper.className = `message-wrapper ${type}`;
+      
+      const isUser = type === 'user';
+      
+      messageWrapper.innerHTML = `
+        ${!isUser ? `<div class="avatar-wrapper bot-avatar"><i class="bi bi-heart-pulse"></i></div>` : ''}
+        <div class="message-bubble ${type}">
+          <div class="message-text">${message}</div>
+          <div class="message-time">${timestamp}</div>
+        </div>
+        ${isUser ? `<div class="avatar-wrapper user-avatar"><i class="bi bi-person-fill"></i></div>` : ''}
+      `;
+      
+      chatArea.appendChild(messageWrapper);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const typingWrapper = document.createElement("div");
+      typingWrapper.className = "message-wrapper bot typing-indicator-wrapper";
+      typingWrapper.innerHTML = `
+        <div class="avatar-wrapper bot-avatar"><i class="bi bi-heart-pulse"></i></div>
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      `;
+      chatArea.appendChild(typingWrapper);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      const typingIndicator = chatArea.querySelector('.typing-indicator-wrapper');
+      if (typingIndicator) typingIndicator.remove();
+    }
+
+    // Load dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-theme');
+      const icon = toggleTheme.querySelector('i');
+      icon.className = "bi bi-sun me-2";
+      toggleTheme.innerHTML = `${icon.outerHTML}Light Mode`;
+    }
+
+    // Focus input
+    input.focus();
+  </script>
+</body>
+</html>
