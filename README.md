@@ -85,28 +85,36 @@ cd medical-chatbot
 ### **Starting a Conversation**
 
 1. Open the MediBot interface in your browser
-![welcome](./resources/welcome.png)
+
+   ![welcome](./resources/welcome.png)
 
 2. Type your medical question in the input field and click the send button
-![welcome](./resources/type.png)
+
+   ![welcome](./resources/type.png)
 
 3. Wait for the AI to process and respond
-![welcome](./resources/wait.png)
+
+   ![welcome](./resources/wait.png)
 
 4. Continue the conversation by asking more questions
-![welcome](./resources/result.png)
+
+   ![welcome](./resources/result.png)
 
 ### **Using Features**
-![welcome](./resources/menu.png)
+
+   ![welcome](./resources/menu.png)
 
 - **Dark Mode**: Click the 3-dots menu → Dark Mode
-![welcome](./resources/dark.png)
+
+   ![welcome](./resources/dark.png)
 
 - **Clear Chat**: Click the 3-dots menu → Clear Chat
-![welcome](./resources/clear.png)
+
+   ![welcome](./resources/clear.png)
 
 - **Export Chat**: Click the 3-dots menu → Export Chat
-![welcome](./resources/export.png)
+  
+   ![welcome](./resources/export.png)
 
 ## Medical Disclaimer
 
