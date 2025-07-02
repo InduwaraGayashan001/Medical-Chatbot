@@ -6,11 +6,18 @@ An AI-powered medical chatbot that provides accurate health information using RA
 
 ## Features
 
-- **AI-Powered Responses**: Uses OpenAI GPT-4 with RAG technology for accurate medical advice
+- **AI-Powered Responses**: Uses OpenAI GPT-4.1-mini with RAG technology for accurate medical advice
 - **Conversation Memory**: Maintains context throughout discussions for better understanding
 - **Theme Support**: Dark/light mode toggle with persistent preferences
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Chat Management**: Export conversation history and clear chat functionality
+
+## Tech Stack
+
+- **Backend:** Flask, LangChain, Python 3.10
+- **Frontend:** HTML5, CSS3, JavaScript ES6+, Bootstrap 5.3
+- **Vector Database:** Pinecone
+- **AI/ML:** OpenAI GPT-4.1-mini, HuggingFace Vector Embeddings
 
 ## Getting Started
 
@@ -72,13 +79,6 @@ cd medical-chatbot
 
 8. **Access the chatbot**
    Open your browser and navigate to `http://localhost:8080`
-
-## Tech Stack
-
-- **Backend:** Flask, LangChain, Python 3.10
-- **Frontend:** HTML5, CSS3, JavaScript ES6+, Bootstrap 5.3
-- **Vector Database:** Pinecone
-- **AI/ML:** OpenAI GPT-4o-mini, HuggingFace Vector Embeddings
 
 ## Usage
 
